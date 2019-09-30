@@ -376,7 +376,7 @@ fn get_id(v: &Video) -> Option<Option<String>> {
 fn read_command_output(command: &mut Command, binary: &String) {
     match command.stdout(Stdio::piped())
         .spawn() {
-            Ok(spawn) => {
+            Ok(mut spawn) => {
                 match spawn.stdout {
                     Some(stdout) => {
                         for byte in stdout.bytes() {
@@ -385,6 +385,13 @@ fn read_command_output(command: &mut Command, binary: &String) {
                         }
                     },
                     None => ()
+                };
+                match spawn.wait() {
+                    Ok(_) => (),
+                    Err(e) => {
+                        println!("{:?}", e);
+                        pause()
+                    }
                 }
             },
             Err(e) => {
