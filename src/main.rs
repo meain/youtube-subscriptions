@@ -416,7 +416,7 @@ fn print_videos(toshow: &Vec<Video>) {
         }
     });
     let cols = get_cols();
-    for video in toshow {
+    for video in toshow.iter().rev() {
         let published = video.published.split("T").collect::<Vec<&str>>();
         let whitespaces = " ".repeat(max - video.channel.chars().count());
         let s = format!(
